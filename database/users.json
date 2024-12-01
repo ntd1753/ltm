@@ -1,15 +1,11 @@
 {
 	"users":	[{
-			"username":	"admin",
-			"password":	"12345"
+			"user_id":	"1",
+			"username":	"Nhi",
+			"password":	"123456"
 		}, {
-			"username":	"johndoe",
-			"password":	"password123"
-		}, {
-			"username":	"21312312",
-			"password":	"12312312"
-		}, {
-			"username":	"1231212314",
-			"password":	"131231"
+			"user_id":	"2",
+			"username":	"rang",
+			"password":	"1234"
 		}]
 }

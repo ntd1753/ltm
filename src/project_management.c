@@ -5,7 +5,7 @@
 #include "file_utils.h"
 
 // Hàm hiển thị danh sách các project
-void display_projects(const char *filename) {
+void display_projects(const char *filename, const char *user_id) {
     char *file_content = read_file(filename);
     if (!file_content) {
         printf("Không có project nào được lưu.\n");
@@ -27,19 +27,34 @@ void display_projects(const char *filename) {
         return;
     }
 
-    printf("\n--- DANH SÁCH PROJECT ---\n");
-    cJSON *project;
+printf("\n--- DANH SÁCH PROJECT CỦA USER ID %s ---\n", user_id);    cJSON *project;
     int index = 1;
-    cJSON_ArrayForEach(project, projects) {
-        const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
-        printf("%d. %s\n", index++, name);
+   cJSON_ArrayForEach(project, projects) {
+        const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
+        if (strcmp(project_user_id, user_id) == 0) {
+            const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
+            printf("%d. %s\n", index++, name);
+        }
     }
 
     cJSON_Delete(json);
 }
 
+
+// Hàm tạo project_id mới
+int generate_project_id(cJSON *projects) {
+    int max_id = 0;
+    cJSON *project;
+    cJSON_ArrayForEach(project, projects) {
+        int project_id = atoi(cJSON_GetObjectItem(project, "project_id")->valuestring);
+        if (project_id > max_id) {
+            max_id = project_id;
+        }
+    }
+    return max_id + 1;
+}
 // Hàm tạo project mới
-void create_project(const char *filename) {
+void create_project(const char *filename, const char *user_id) {
     char name[50], description[200];
 
     printf("\n--- TẠO PROJECT MỚI ---\n");
@@ -74,10 +89,14 @@ void create_project(const char *filename) {
         cJSON_Delete(json);
         return;
     }
-
+    int new_project_id = generate_project_id(projects);
     cJSON *new_project = cJSON_CreateObject();
+    char project_id_str[10];
+    sprintf(project_id_str, "%d", generate_project_id(projects));
+    cJSON_AddStringToObject(new_project, "project_id", project_id_str);
     cJSON_AddStringToObject(new_project, "name", name);
     cJSON_AddStringToObject(new_project, "description", description);
+    cJSON_AddStringToObject(new_project, "user_id", user_id);
     cJSON_AddItemToArray(projects, new_project);
 
     char *updated_content = cJSON_Print(json);
@@ -92,7 +111,7 @@ void create_project(const char *filename) {
 }
 
 // Hàm xem chi tiết project
-void view_project_details(const char *filename) {
+void view_project_details(const char *filename, const char *user_id) {
     int choice;
     printf("\nChọn số thứ tự của project để xem chi tiết: ");
     scanf("%d", &choice);
@@ -121,17 +140,20 @@ void view_project_details(const char *filename) {
     int index = 1;
     cJSON *project;
     cJSON_ArrayForEach(project, projects) {
-        if (index == choice) {
-            const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
-            const char *description = cJSON_GetObjectItem(project, "description")->valuestring;
+        const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
+        if (strcmp(project_user_id, user_id) == 0) {
+            if (index == choice) {
+                const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
+                const char *description = cJSON_GetObjectItem(project, "description")->valuestring;
 
-            printf("\n--- CHI TIẾT PROJECT ---\n");
-            printf("Tên: %s\n", name);
-            printf("Mô tả: %s\n", description);
-            cJSON_Delete(json);
-            return;
+                printf("\n--- CHI TIẾT PROJECT ---\n");
+                printf("Tên: %s\n", name);
+                printf("Mô tả: %s\n", description);
+                cJSON_Delete(json);
+                return;
+            }
+            index++;
         }
-        index++;
     }
 
     printf("Số thứ tự không hợp lệ.\n");
@@ -139,7 +161,7 @@ void view_project_details(const char *filename) {
 }
 
 // Hàm quản lý project
-void manage_projects(const char *filename) {
+void manage_projects(const char *filename, const char *user_id) {
     int choice;
     do {
         printf("\n--- QUẢN LÝ PROJECT ---\n");
@@ -152,13 +174,13 @@ void manage_projects(const char *filename) {
 
         switch (choice) {
             case 1:
-                display_projects(filename);
+                display_projects(filename, user_id);
                 break;
             case 2:
-                create_project(filename);
+                create_project(filename, user_id);
                 break;
             case 3:
-                view_project_details(filename);
+                view_project_details(filename, user_id);
                 break;
             case 0:
                 printf("Quay lại menu chính.\n");

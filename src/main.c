@@ -5,7 +5,7 @@
 int main() {
     const char *user_file = "../database/users.json";
     const char *project_file = "../database/project.json";
-
+    char user_id[10]; // Đảm bảo đủ dung lượng để chứa user_id
     int choice;
     do {
         printf("\nChọn chức năng:\n");
@@ -17,12 +17,12 @@ int main() {
 
         switch (choice) {
             case 1:
-                create_account(user_file);
+                register_user(user_file);
                 break;
             case 2:
-                if (authenticate_user(user_file)) {
+                if (authenticate_user(user_file, user_id)) {
                     printf("\nĐăng nhập thành công!\n");
-                    manage_projects(project_file); // Chuyển sang quản lý project
+                    manage_projects(project_file, user_id); // Chuyển sang quản lý project
                 } else {
                     printf("\nĐăng nhập thất bại. Vui lòng thử lại.\n");
                 }
