@@ -1,4 +1,4 @@
-# Install script for directory: /home/rang/ltm/src
+# Install script for directory: /home/vboxuser/ltm/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/rang/ltm/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/vboxuser/ltm/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
