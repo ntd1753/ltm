@@ -52,4 +52,7 @@ CMakeFiles/json_test.dir/project_management.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/strings.h /home/vboxuser/ltm/src/../cJSON/cJSON.h \
- /home/vboxuser/ltm/src/file_utils.h
+ /home/vboxuser/ltm/src/file_utils.h \
+ /home/vboxuser/ltm/src/task_management.h \
+ /home/vboxuser/ltm/src/member_management.h \
+ /home/vboxuser/ltm/src/project_management.h

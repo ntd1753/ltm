@@ -125,10 +125,38 @@ CMakeFiles/json_test.dir/project_management.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/json_test.dir/project_management.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/vboxuser/ltm/src/project_management.c -o CMakeFiles/json_test.dir/project_management.c.s
 
+CMakeFiles/json_test.dir/member_management.c.o: CMakeFiles/json_test.dir/flags.make
+CMakeFiles/json_test.dir/member_management.c.o: /home/vboxuser/ltm/src/member_management.c
+CMakeFiles/json_test.dir/member_management.c.o: CMakeFiles/json_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/json_test.dir/member_management.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/json_test.dir/member_management.c.o -MF CMakeFiles/json_test.dir/member_management.c.o.d -o CMakeFiles/json_test.dir/member_management.c.o -c /home/vboxuser/ltm/src/member_management.c
+
+CMakeFiles/json_test.dir/member_management.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/json_test.dir/member_management.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/vboxuser/ltm/src/member_management.c > CMakeFiles/json_test.dir/member_management.c.i
+
+CMakeFiles/json_test.dir/member_management.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/json_test.dir/member_management.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/vboxuser/ltm/src/member_management.c -o CMakeFiles/json_test.dir/member_management.c.s
+
+CMakeFiles/json_test.dir/task_management.c.o: CMakeFiles/json_test.dir/flags.make
+CMakeFiles/json_test.dir/task_management.c.o: /home/vboxuser/ltm/src/task_management.c
+CMakeFiles/json_test.dir/task_management.c.o: CMakeFiles/json_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/json_test.dir/task_management.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/json_test.dir/task_management.c.o -MF CMakeFiles/json_test.dir/task_management.c.o.d -o CMakeFiles/json_test.dir/task_management.c.o -c /home/vboxuser/ltm/src/task_management.c
+
+CMakeFiles/json_test.dir/task_management.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/json_test.dir/task_management.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/vboxuser/ltm/src/task_management.c > CMakeFiles/json_test.dir/task_management.c.i
+
+CMakeFiles/json_test.dir/task_management.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/json_test.dir/task_management.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/vboxuser/ltm/src/task_management.c -o CMakeFiles/json_test.dir/task_management.c.s
+
 CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o: CMakeFiles/json_test.dir/flags.make
 CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o: /home/vboxuser/ltm/cJSON/cJSON.c
 CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o: CMakeFiles/json_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o -MF CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o.d -o CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o -c /home/vboxuser/ltm/cJSON/cJSON.c
 
 CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.i: cmake_force
@@ -145,6 +173,8 @@ json_test_OBJECTS = \
 "CMakeFiles/json_test.dir/file_utils.c.o" \
 "CMakeFiles/json_test.dir/user_management.c.o" \
 "CMakeFiles/json_test.dir/project_management.c.o" \
+"CMakeFiles/json_test.dir/member_management.c.o" \
+"CMakeFiles/json_test.dir/task_management.c.o" \
 "CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o"
 
 # External object files for target json_test
@@ -154,10 +184,12 @@ json_test: CMakeFiles/json_test.dir/main.c.o
 json_test: CMakeFiles/json_test.dir/file_utils.c.o
 json_test: CMakeFiles/json_test.dir/user_management.c.o
 json_test: CMakeFiles/json_test.dir/project_management.c.o
+json_test: CMakeFiles/json_test.dir/member_management.c.o
+json_test: CMakeFiles/json_test.dir/task_management.c.o
 json_test: CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o
 json_test: CMakeFiles/json_test.dir/build.make
 json_test: CMakeFiles/json_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable json_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/vboxuser/ltm/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable json_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/json_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

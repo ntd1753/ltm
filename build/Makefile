@@ -201,6 +201,30 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/main.c.s
 .PHONY : main.c.s
 
+member_management.o: member_management.c.o
+.PHONY : member_management.o
+
+# target to build an object file
+member_management.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/member_management.c.o
+.PHONY : member_management.c.o
+
+member_management.i: member_management.c.i
+.PHONY : member_management.i
+
+# target to preprocess a source file
+member_management.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/member_management.c.i
+.PHONY : member_management.c.i
+
+member_management.s: member_management.c.s
+.PHONY : member_management.s
+
+# target to generate assembly for a file
+member_management.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/member_management.c.s
+.PHONY : member_management.c.s
+
 project_management.o: project_management.c.o
 .PHONY : project_management.o
 
@@ -224,6 +248,30 @@ project_management.s: project_management.c.s
 project_management.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/project_management.c.s
 .PHONY : project_management.c.s
+
+task_management.o: task_management.c.o
+.PHONY : task_management.o
+
+# target to build an object file
+task_management.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/task_management.c.o
+.PHONY : task_management.c.o
+
+task_management.i: task_management.c.i
+.PHONY : task_management.i
+
+# target to preprocess a source file
+task_management.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/task_management.c.i
+.PHONY : task_management.c.i
+
+task_management.s: task_management.c.s
+.PHONY : task_management.s
+
+# target to generate assembly for a file
+task_management.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/json_test.dir/build.make CMakeFiles/json_test.dir/task_management.c.s
+.PHONY : task_management.c.s
 
 user_management.o: user_management.c.o
 .PHONY : user_management.o
@@ -267,9 +315,15 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... member_management.o"
+	@echo "... member_management.i"
+	@echo "... member_management.s"
 	@echo "... project_management.o"
 	@echo "... project_management.i"
 	@echo "... project_management.s"
+	@echo "... task_management.o"
+	@echo "... task_management.i"
+	@echo "... task_management.s"
 	@echo "... user_management.o"
 	@echo "... user_management.i"
 	@echo "... user_management.s"

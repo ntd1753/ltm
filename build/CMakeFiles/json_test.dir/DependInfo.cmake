@@ -11,7 +11,9 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/vboxuser/ltm/src/file_utils.c" "CMakeFiles/json_test.dir/file_utils.c.o" "gcc" "CMakeFiles/json_test.dir/file_utils.c.o.d"
   "/home/vboxuser/ltm/cJSON/cJSON.c" "CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o" "gcc" "CMakeFiles/json_test.dir/home/vboxuser/ltm/cJSON/cJSON.c.o.d"
   "/home/vboxuser/ltm/src/main.c" "CMakeFiles/json_test.dir/main.c.o" "gcc" "CMakeFiles/json_test.dir/main.c.o.d"
+  "/home/vboxuser/ltm/src/member_management.c" "CMakeFiles/json_test.dir/member_management.c.o" "gcc" "CMakeFiles/json_test.dir/member_management.c.o.d"
   "/home/vboxuser/ltm/src/project_management.c" "CMakeFiles/json_test.dir/project_management.c.o" "gcc" "CMakeFiles/json_test.dir/project_management.c.o.d"
+  "/home/vboxuser/ltm/src/task_management.c" "CMakeFiles/json_test.dir/task_management.c.o" "gcc" "CMakeFiles/json_test.dir/task_management.c.o.d"
   "/home/vboxuser/ltm/src/user_management.c" "CMakeFiles/json_test.dir/user_management.c.o" "gcc" "CMakeFiles/json_test.dir/user_management.c.o.d"
   )
 

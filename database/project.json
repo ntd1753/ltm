@@ -23,6 +23,10 @@
 			"project_id":	"5",
 			"name":	"prj cua dat",
 			"description":	"1111",
-			"user_id":	"3"
+			"user_id":	"3",
+			"members":	[{
+					"name":	"Nhi",
+					"id":	"1"
+				}]
 		}]
 }
