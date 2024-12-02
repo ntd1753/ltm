@@ -4,9 +4,6 @@
 #include <cJSON.h>
 #include "file_utils.h"
 #include "task_management.h"
-#include "member_management.h"
-#include "project_management.h"
-
 // Hàm hiển thị danh sách các project
 void display_projects(const char *filename, const char *user_id) {
     char *file_content = read_file(filename);
@@ -113,36 +110,6 @@ void create_project(const char *filename, const char *user_id) {
     free(updated_content);
     cJSON_Delete(json);
 }
-// Hàm quản lý project
-void manage_projects(const char *filename, const char *user_id) {
-    int choice;
-    do {
-        printf("\n--- QUẢN LÝ PROJECT ---\n");
-        printf("1. Xem danh sách project\n");
-        printf("2. Tạo project mới\n");
-        printf("3. Xem chi tiết project\n");
-        printf("0. Quay lại\n");
-        printf("Lựa chọn: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                display_projects(filename, user_id);
-                break;
-            case 2:
-                create_project(filename, user_id);
-                break;
-            case 3:
-                view_project_details(filename, user_id);
-                break;
-            case 0:
-                printf("Quay lại menu chính.\n");
-                break;
-            default:
-                printf("Lựa chọn không hợp lệ.\n");
-        }
-    } while (choice != 0);
-}
 
 // Hàm xem chi tiết project
 void view_project_details(const char *filename, const char *user_id) {
@@ -196,7 +163,7 @@ void view_project_details(const char *filename, const char *user_id) {
                 scanf("%d", &projectChoice);
                 switch (projectChoice) {
                     case 1:
-                        add_member_to_project(filename, user_id, project);
+                        // add_member_to_project(filename, user_id, project);
                         break;
                     case 2:
                         create_task("../database/task.json", project_id);                      
@@ -205,13 +172,12 @@ void view_project_details(const char *filename, const char *user_id) {
                         display_tasks("../database/task.json", project_id);
                         break;
                     case 4:
-                        view_members_of_project(filename, user_id, project);
+                        // view_members_of_project(filename, user_id, project);
                         break;
                     case 5:
                         view_task_details("../database/task.json", project_id);
-                        break;
                     case 0:
-                            manage_projects(filename, user_id);
+                            printf("Quay lại chi tiết project.\n");
                             break;
                     default:
                         printf("Lựa chọn không hợp lệ.\n");
@@ -228,3 +194,33 @@ void view_project_details(const char *filename, const char *user_id) {
     cJSON_Delete(json);
 }
 
+// Hàm quản lý project
+void manage_projects(const char *filename, const char *user_id) {
+    int choice;
+    do {
+        printf("\n--- QUẢN LÝ PROJECT ---\n");
+        printf("1. Xem danh sách project\n");
+        printf("2. Tạo project mới\n");
+        printf("3. Xem chi tiết project\n");
+        printf("0. Quay lại\n");
+        printf("Lựa chọn: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                display_projects(filename, user_id);
+                break;
+            case 2:
+                create_project(filename, user_id);
+                break;
+            case 3:
+                view_project_details(filename, user_id);
+                break;
+            case 0:
+                printf("Quay lại menu chính.\n");
+                break;
+            default:
+                printf("Lựa chọn không hợp lệ.\n");
+        }
+    } while (choice != 0);
+}
