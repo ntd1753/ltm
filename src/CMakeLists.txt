@@ -13,8 +13,9 @@ set(SOURCES
     ${SOURCE_DIR}/file_utils.c
     ${SOURCE_DIR}/user_management.c
     ${SOURCE_DIR}/project_management.c
-    ${SOURCE_DIR}/member_management.c
     ${SOURCE_DIR}/task_management.c
+    ${SOURCE_DIR}/member_management.c
+
 )
 
 # Đường dẫn tới thư viện cJSON

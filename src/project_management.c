@@ -30,7 +30,8 @@ void display_projects(const char *filename, const char *user_id) {
         return;
     }
 
-printf("\n--- DANH SÁCH PROJECT CỦA USER ID %s ---\n", user_id);    cJSON *project;
+printf("\n--- DANH SÁCH PROJECT CỦA USER ID %s ---\n", user_id); 
+    cJSON *project;
     int index = 1;
    cJSON_ArrayForEach(project, projects) {
         const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
@@ -148,39 +149,44 @@ void view_project_details(const char *filename, const char *user_id) {
             if (index == choice) {
                 const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
                 const char *description = cJSON_GetObjectItem(project, "description")->valuestring;
+                const char *project_id = cJSON_GetObjectItem(project, "project_id")->valuestring;
                 int projectChoice;
-            
                 printf("\n--- CHI TIẾT PROJECT ---\n");
                 printf("Tên: %s\n", name);
                 printf("Mô tả: %s\n", description);
+                do{
                 printf("\n--- tác vụ -- \n");
-                printf("1. them thanh vien\n");
+                printf("1. Thêm thành viên\n");
                 printf("2. Thêm công việc\n");
                 printf("3. Xem danh sách công việc\n");
                 printf("4. Xem danh sach thanh vien\n");
+                printf("5. Xem chi tiết công việc\n");
                 printf("\n0. Quay lại\n");
                 printf("Lựa chọn: ");
                 scanf("%d", &projectChoice);
-
                 switch (projectChoice) {
                     case 1:
                         add_member_to_project(filename, user_id, project);
                         break;
                     case 2:
-                        //add_task_to_project(filename, user_id, project);
+                        create_task("../database/task.json", project_id);                      
                         break;
                     case 3:
-                        //view_tasks_of_project(filename, user_id, project);
+                        display_tasks("../database/task.json", project_id);
                         break;
                     case 4:
                         view_members_of_project(filename, user_id, project);
                         break;
-                    case 0:
-                        manage_projects(filename, user_id);
+                    case 5:
+                        view_task_details("../database/task.json", project_id);
                         break;
+                    case 0:
+                            printf("Quay lại chi tiết project.\n");
+                            break;
                     default:
                         printf("Lựa chọn không hợp lệ.\n");
-                }while (choice != 0);
+                }
+            }while (choice != 0);
                 cJSON_Delete(json);
                 return;
             }
