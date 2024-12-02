@@ -5,7 +5,9 @@
 int main() {
     const char *user_file = "../database/users.json";
     const char *project_file = "../database/project.json";
+    const char *task_file = "../database/task.json";
     char user_id[10]; // Đảm bảo đủ dung lượng để chứa user_id
+    char project_id[20]; // Đảm bảo đủ dung lượng để chứa project_id
     int choice;
     do {
         printf("\nChọn chức năng:\n");
