@@ -113,6 +113,36 @@ void create_project(const char *filename, const char *user_id) {
     free(updated_content);
     cJSON_Delete(json);
 }
+// Hàm quản lý project
+void manage_projects(const char *filename, const char *user_id) {
+    int choice;
+    do {
+        printf("\n--- QUẢN LÝ PROJECT ---\n");
+        printf("1. Xem danh sách project\n");
+        printf("2. Tạo project mới\n");
+        printf("3. Xem chi tiết project\n");
+        printf("0. Quay lại\n");
+        printf("Lựa chọn: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                display_projects(filename, user_id);
+                break;
+            case 2:
+                create_project(filename, user_id);
+                break;
+            case 3:
+                view_project_details(filename, user_id);
+                break;
+            case 0:
+                printf("Quay lại menu chính.\n");
+                break;
+            default:
+                printf("Lựa chọn không hợp lệ.\n");
+        }
+    } while (choice != 0);
+}
 
 // Hàm xem chi tiết project
 void view_project_details(const char *filename, const char *user_id) {
@@ -181,7 +211,7 @@ void view_project_details(const char *filename, const char *user_id) {
                         view_task_details("../database/task.json", project_id);
                         break;
                     case 0:
-                            printf("Quay lại chi tiết project.\n");
+                            manage_projects(filename, user_id);
                             break;
                     default:
                         printf("Lựa chọn không hợp lệ.\n");
@@ -198,33 +228,3 @@ void view_project_details(const char *filename, const char *user_id) {
     cJSON_Delete(json);
 }
 
-// Hàm quản lý project
-void manage_projects(const char *filename, const char *user_id) {
-    int choice;
-    do {
-        printf("\n--- QUẢN LÝ PROJECT ---\n");
-        printf("1. Xem danh sách project\n");
-        printf("2. Tạo project mới\n");
-        printf("3. Xem chi tiết project\n");
-        printf("0. Quay lại\n");
-        printf("Lựa chọn: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                display_projects(filename, user_id);
-                break;
-            case 2:
-                create_project(filename, user_id);
-                break;
-            case 3:
-                view_project_details(filename, user_id);
-                break;
-            case 0:
-                printf("Quay lại menu chính.\n");
-                break;
-            default:
-                printf("Lựa chọn không hợp lệ.\n");
-        }
-    } while (choice != 0);
-}
