@@ -24,10 +24,5 @@
 			"name":	"prj cua dat",
 			"description":	"1111",
 			"user_id":	"3"
-		}, {
-			"project_id":	"6",
-			"name":	"ltm",
-			"description":	"tsfaf",
-			"user_id":	"2"
-		}]
+		}
 }

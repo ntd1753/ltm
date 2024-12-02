@@ -4,6 +4,9 @@
 #include <cJSON.h>
 #include "file_utils.h"
 #include "task_management.h"
+#include "member_management.h"
+#include "project_management.h"
+
 // Hàm hiển thị danh sách các project
 void display_projects(const char *filename, const char *user_id) {
     char *file_content = read_file(filename);
@@ -163,7 +166,7 @@ void view_project_details(const char *filename, const char *user_id) {
                 scanf("%d", &projectChoice);
                 switch (projectChoice) {
                     case 1:
-                        // add_member_to_project(filename, user_id, project);
+                        add_member_to_project(filename, user_id, project);
                         break;
                     case 2:
                         create_task("../database/task.json", project_id);                      
@@ -172,7 +175,7 @@ void view_project_details(const char *filename, const char *user_id) {
                         display_tasks("../database/task.json", project_id);
                         break;
                     case 4:
-                        // view_members_of_project(filename, user_id, project);
+                        view_members_of_project(filename, user_id, project);
                         break;
                     case 5:
                         view_task_details("../database/task.json", project_id);
