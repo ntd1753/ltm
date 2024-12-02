@@ -1,3 +1,0 @@
-/home/vboxuser/ltm/build/CMakeFiles/json_test.dir
-/home/vboxuser/ltm/build/CMakeFiles/edit_cache.dir
-/home/vboxuser/ltm/build/CMakeFiles/rebuild_cache.dir
