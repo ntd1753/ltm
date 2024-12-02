@@ -13,7 +13,7 @@ const char* generate_member_id() {
     return id_str;
 }
 
-void add_member_to_project(const char *filename, const char *user_id, cJSON *project) {
+void add_member_to_project(const char *filename, const char *user_id, cJSON *project, const char *current_project_id) {
     char member_name[50];
     printf("Nhập tên thành viên mới: ");
     getchar(); // Đọc bỏ ký tự xuống dòng
@@ -43,19 +43,18 @@ void add_member_to_project(const char *filename, const char *user_id, cJSON *pro
         return;
     }
 
-    // Tìm dự án với project_id = 5
     cJSON *target_project = NULL;
     cJSON *project_item = NULL;
     cJSON_ArrayForEach(project_item, projects) {
         cJSON *project_id = cJSON_GetObjectItem(project_item, "project_id");
-        if (cJSON_IsString(project_id) && strcmp(project_id->valuestring, "5") == 0) {
+        if (cJSON_IsString(project_id) && strcmp(project_id->valuestring, current_project_id) == 0) {
             target_project = project_item;
             break;
         }
     }
 
     if (target_project == NULL) {
-        printf("Không tìm thấy dự án với project_id = 5.\n");
+        printf("Không tìm thấy dự án.\n");
         cJSON_Delete(root);
         return;
     }
@@ -79,7 +78,7 @@ void add_member_to_project(const char *filename, const char *user_id, cJSON *pro
     }
 
     // Tải dữ liệu từ file users.json
-    char *users_content = read_file("/home/vboxuser/ltm/database/users.json");
+    char *users_content = read_file("../database/users.json");
     if (users_content == NULL) {
         printf("Lỗi đọc file users.json.\n");
         cJSON_Delete(root);

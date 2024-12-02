@@ -140,6 +140,7 @@ void manage_projects(const char *filename, const char *user_id) {
                 break;
             default:
                 printf("Lựa chọn không hợp lệ.\n");
+                break;
         }
     } while (choice != 0);
 }
@@ -196,7 +197,7 @@ void view_project_details(const char *filename, const char *user_id) {
                 scanf("%d", &projectChoice);
                 switch (projectChoice) {
                     case 1:
-                        add_member_to_project(filename, user_id, project);
+                        add_member_to_project(filename, user_id, project, project_id);
                         break;
                     case 2:
                         create_task("../database/task.json", project_id);                      
