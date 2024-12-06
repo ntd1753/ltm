@@ -162,12 +162,16 @@ void view_task_details(const char *filename, const char *project_id) {
                 const char *description = cJSON_GetObjectItem(task, "description")->valuestring;
                 const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
                 const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
+                cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
+                const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
 
                 printf("\n--- CHI TIẾT TASK ---\n");
                 printf("Tên: %s\n", name);
                 printf("Mô tả: %s\n", description);
                 printf("Deadline: %s\n", deadline);
-                printf("Trạng thái: %s\n", status);
+                printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                printf("Tiến độ công việc : %s\n", status);
                 cJSON_Delete(json);
                 return;
             }
@@ -179,4 +183,61 @@ void view_task_details(const char *filename, const char *project_id) {
     cJSON_Delete(json);
 }
 
+//ham tim id tu ten task
+const char* get_task_id_by_name(cJSON *tasks, const char *task_name) {
+    cJSON *task;
+    cJSON_ArrayForEach(task, tasks) {
+        cJSON *name = cJSON_GetObjectItem(task, "name");
+        if (cJSON_IsString(name) && (name->valuestring != NULL)) {
+            if (strcmp(name->valuestring, task_name) == 0) {
+                return cJSON_GetObjectItem(task, "task_id")->valuestring;
+            }
+        }
+    }
+    return NULL;
+}
 
+void assign_task_to_member(const char *filename, const char *task_id, const char *member_id, const char *member_name) {
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có task nào được lưu.\n");
+        return;
+    }
+
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu task.\n");
+        return;
+    }
+
+    cJSON *tasks = cJSON_GetObjectItem(json, "tasks");
+    if (!cJSON_IsArray(tasks)) {
+        printf("Danh sách task không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    cJSON *task;
+    cJSON_ArrayForEach(task, tasks) {
+        const char *current_task_id = cJSON_GetObjectItem(task, "task_id")->valuestring;
+        if (strcmp(current_task_id, task_id) == 0) {
+            cJSON *assigned_member = cJSON_CreateObject();
+            cJSON_AddStringToObject(assigned_member, "id", member_id);
+            cJSON_AddStringToObject(assigned_member, "name", member_name);
+            cJSON_AddItemToObject(task, "assigned_member", assigned_member);
+            break;
+        }
+    }
+
+    char *updated_content = cJSON_Print(json);
+    if (!write_file(filename, updated_content)) {
+        printf("Lỗi ghi file task.\n");
+    } else {
+        printf("Task được gán thành công!\n");
+    }
+
+    free(updated_content);
+    cJSON_Delete(json);
+}

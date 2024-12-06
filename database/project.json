@@ -3,26 +3,24 @@
 			"project_id":	"1",
 			"name":	"rang",
 			"description":	"dfsf",
-			"user_id":	"2"
+			"user_id":	"2",
+			"members":	[{
+					"name":	"Nhi",
+					"id":	"1"
+				}]
 		}, {
 			"project_id":	"2",
-			"name":	"cura rang",
-			"description":	"dhfksg",
-			"user_id":	"2"
-		}, {
-			"project_id":	"3",
 			"name":	"project cua Nhi",
-			"description":	"fsfg",
+			"description":	"day la project cua Nhi",
 			"user_id":	"1"
 		}, {
-			"project_id":	"4",
-			"name":	"dat09",
-			"description":	"vui ve len",
-			"user_id":	"3"
-		}, {
-			"project_id":	"5",
-			"name":	"prj cua dat",
-			"description":	"1111",
-			"user_id":	"3"
-		}
+			"project_id":	"3",
+			"name":	"project 2 cua Nhi",
+			"description":	"project 2 cua Nhi",
+			"user_id":	"1",
+			"members":	[{
+					"name":	"rang",
+					"id":	"2"
+				}]
+		}]
 }
