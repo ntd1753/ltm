@@ -364,6 +364,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                         printf("4. Xem danh sách thành viên\n");
                         printf("5. Xem chi tiết công việc\n");
                         printf("6. Gán công việc cho thành viên\n");
+                        printf("7. Chat với thành viên\n");
                         printf("0. Quay lại\n");
                         printf("Lựa chọn: ");
                         scanf("%d", &projectChoice);
@@ -426,6 +427,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 }
                                 break;
                             }
+                            case 7:
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;
@@ -440,6 +442,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                         printf("2. Xem chi tiết công việc\n");
                         printf("3. Cập nhật tiến độ công việc\n");
                         printf("4. Xem danh sách thành viên\n");
+                        printf("5. Chat voi thanh vien\n");
                         printf("0. Quay lại\n");
                         printf("Lựa chọn: ");
                         scanf("%d", &projectChoice);
@@ -451,11 +454,12 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 view_task_details("../database/task.json", project_id);
                                 break;
                             case 3:
-                                // update_task_progress("../database/task.json", project_id, user_id);
-                                // break;
+                                update_task_progress("../database/task.json", project_id, user_id);
+                                break;
                             case 4:
                                 view_members_of_project(filename, user_id, project);
                                 break;
+                            case 5:
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;

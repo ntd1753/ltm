@@ -21,6 +21,14 @@
 			"members":	[{
 					"name":	"rang",
 					"id":	"2"
+				}, {
+					"name":	"dat",
+					"id":	"3"
 				}]
+		}, {
+			"project_id":	"4",
+			"name":	"project 3 Nhi",
+			"description":	"project 3 cua Nhi",
+			"user_id":	"1"
 		}]
 }
