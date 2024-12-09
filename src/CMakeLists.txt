@@ -15,6 +15,7 @@ set(SOURCES
     ${SOURCE_DIR}/project_management.c
     ${SOURCE_DIR}/task_management.c
     ${SOURCE_DIR}/member_management.c
+    ${SOURCE_DIR}/chat_management.c
 
 )
 

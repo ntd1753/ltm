@@ -6,43 +6,7 @@
 #include "task_management.h"
 #include "member_management.h"
 #include "project_management.h"
-
-// Hàm hiển thị danh sách các project
-// void display_projects(const char *filename, const char *user_id) {
-//     char *file_content = read_file(filename);
-//     if (!file_content) {
-//         printf("Không có project nào được lưu.\n");
-//         return;
-//     }
-
-//     cJSON *json = cJSON_Parse(file_content);
-//     free(file_content);
-
-//     if (!json) {
-//         printf("Lỗi: Không thể đọc dữ liệu project.\n");
-//         return;
-//     }
-
-//     cJSON *projects = cJSON_GetObjectItem(json, "projects");
-//     if (!cJSON_IsArray(projects)) {
-//         printf("Danh sách project không hợp lệ.\n");
-//         cJSON_Delete(json);
-//         return;
-//     }
-
-// printf("\n--- DANH SÁCH PROJECT CỦA USER ID %s ---\n", user_id); 
-//     cJSON *project;
-//     int index = 1;
-//    cJSON_ArrayForEach(project, projects) {
-//         const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
-//         if (strcmp(project_user_id, user_id) == 0) {
-//             const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
-//             printf("%d. %s\n", index++, name);
-//         }
-//     }
-
-//     cJSON_Delete(json);
-// }
+#include "chat_management.h"
 
 void display_projects(const char *filename, const char *user_id, int mode) {
     char *file_content = read_file(filename);
@@ -187,7 +151,8 @@ void manage_projects(const char *filename, const char *user_id) {
         printf("2. Xem project được giao\n");
         printf("3. Tạo project mới\n");
         printf("4. Xem chi tiết project của tôi\n");
-        printf("5. Xem chi tiết project được giao\n");        printf("0. Quay lại\n");
+        printf("5. Xem chi tiết project được giao\n");
+        printf("0. Quay lại\n");
         printf("Lựa chọn: ");
         scanf("%d", &choice);
 
@@ -217,89 +182,6 @@ void manage_projects(const char *filename, const char *user_id) {
     } while (choice != 0);
 }
 
-// Hàm xem chi tiết project
-// void view_project_details(const char *filename, const char *user_id) {
-//     int choice;
-//     printf("\nChọn số thứ tự của project để xem chi tiết: ");
-//     scanf("%d", &choice);
-
-//     char *file_content = read_file(filename);
-//     if (!file_content) {
-//         printf("Không có project nào được lưu.\n");
-//         return;
-//     }
-
-//     cJSON *json = cJSON_Parse(file_content);
-//     free(file_content);
-
-//     if (!json) {
-//         printf("Lỗi: Không thể đọc dữ liệu project.\n");
-//         return;
-//     }
-
-//     cJSON *projects = cJSON_GetObjectItem(json, "projects");
-//     if (!cJSON_IsArray(projects)) {
-//         printf("Danh sách project không hợp lệ.\n");
-//         cJSON_Delete(json);
-//         return;
-//     }
-
-//     int index = 1;
-//     cJSON *project;
-//     cJSON_ArrayForEach(project, projects) {
-//         const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
-//         if (strcmp(project_user_id, user_id) == 0) {
-//             if (index == choice) {
-//                 const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
-//                 const char *description = cJSON_GetObjectItem(project, "description")->valuestring;
-//                 const char *project_id = cJSON_GetObjectItem(project, "project_id")->valuestring;
-//                 int projectChoice;
-//                 printf("\n--- CHI TIẾT PROJECT ---\n");
-//                 printf("Tên: %s\n", name);
-//                 printf("Mô tả: %s\n", description);
-//                 do{
-//                 printf("\n--- tác vụ -- \n");
-//                 printf("1. Thêm thành viên\n");
-//                 printf("2. Thêm công việc\n");
-//                 printf("3. Xem danh sách công việc\n");
-//                 printf("4. Xem danh sach thanh vien\n");
-//                 printf("5. Xem chi tiết công việc\n");
-//                 printf("\n0. Quay lại\n");
-//                 printf("Lựa chọn: ");
-//                 scanf("%d", &projectChoice);
-//                 switch (projectChoice) {
-//                     case 1:
-//                         add_member_to_project(filename, user_id, project, project_id);
-//                         break;
-//                     case 2:
-//                         create_task("../database/task.json", project_id);                      
-//                         break;
-//                     case 3:
-//                         display_tasks("../database/task.json", project_id);
-//                         break;
-//                     case 4:
-//                         view_members_of_project(filename, user_id, project);
-//                         break;
-//                     case 5:
-//                         view_task_details("../database/task.json", project_id);
-//                         break;
-//                     case 0:
-//                             manage_projects(filename, user_id);
-//                             break;
-//                     default:
-//                         printf("Lựa chọn không hợp lệ.\n");
-//                 }
-//             }while (choice != 0);
-//                 cJSON_Delete(json);
-//                 return;
-//             }
-//             index++;
-//         }
-//     }
-
-//     printf("Số thứ tự không hợp lệ.\n");
-//     cJSON_Delete(json);
-// }
 
 void view_project_details(const char *filename, const char *user_id, int mode) {
     int choice;
@@ -428,6 +310,8 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 break;
                             }
                             case 7:
+                                chat_with_member(filename, user_id, project);
+
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;
@@ -460,6 +344,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 view_members_of_project(filename, user_id, project);
                                 break;
                             case 5:
+                                chat_with_member(filename, user_id, project);
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;
