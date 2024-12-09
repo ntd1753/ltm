@@ -1,9 +1,10 @@
 {
 	"tasks":	[{
 			"task_id":	"4",
-			"name":	"task cua project 2 cua Nhi",
+			"name":	"task 1",
 			"description":	"task project 2 Nhi",
 			"project_id":	"3",
+			"start_date":	"2025-12-01",
 			"deadline":	"2025-12-06",
 			"status":	"30",
 			"assigned_member":	{
@@ -12,9 +13,10 @@
 			}
 		}, {
 			"task_id":	"5",
-			"name":	"task",
+			"name":	"task 2",
 			"description":	"task",
 			"project_id":	"3",
+			"start_date":	"2025-12-01",
 			"deadline":	"2025-12-06",
 			"status":	"100",
 			"assigned_member":	{
@@ -23,9 +25,10 @@
 			}
 		}, {
 			"task_id":	"6",
-			"name":	"task 3 project 2 cua Nhi",
-			"description":	"task 3 project 2 cua Nhi",
+			"name":	"task 3",
+			"description":	"task 3",
 			"project_id":	"3",
+			"start_date":	"2025-10-21",
 			"deadline":	"2025-11-05",
 			"status":	"90",
 			"assigned_member":	{

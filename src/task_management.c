@@ -1,9 +1,12 @@
+#define _XOPEN_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <cJSON.h>
+#include <time.h>
 #include "file_utils.h"
 #include "task_management.h"
+
 
 // Hàm tạo task_id mới
 int generate_task_id(cJSON *tasks) {
@@ -19,7 +22,7 @@ int generate_task_id(cJSON *tasks) {
 }
 // Hàm tạo task mới
 void create_task(const char *filename, const char *project_id) {
-    char name[50], description[200], deadline[20], status[20];
+    char name[50], description[200],start_date[20], deadline[20], status[20];
 
     printf("\n--- TẠO TASK MỚI ---\n");
     printf("Nhập tên task: ");
@@ -30,6 +33,11 @@ void create_task(const char *filename, const char *project_id) {
     printf("Nhập mô tả task: ");
     fgets(description, sizeof(description), stdin);
     description[strcspn(description, "\n")] = '\0';
+
+    printf("Nhập ngày bắt đầu (YYYY-MM-DD): ");
+    fgets(start_date, sizeof(start_date), stdin);
+    start_date[strcspn(start_date, "\n")] = '\0';
+
 
     printf("Nhập deadline (YYYY-MM-DD): ");
     fgets(deadline, sizeof(deadline), stdin);
@@ -71,8 +79,10 @@ void create_task(const char *filename, const char *project_id) {
     cJSON_AddStringToObject(new_task, "name", name);
     cJSON_AddStringToObject(new_task, "description", description);
     cJSON_AddStringToObject(new_task, "project_id", project_id);
+    cJSON_AddStringToObject(new_task, "start_date", start_date);
     cJSON_AddStringToObject(new_task, "deadline", deadline);
     cJSON_AddStringToObject(new_task, "status", status);
+
     cJSON_AddItemToArray(tasks, new_task);
 
     char *updated_content = cJSON_Print(json);
@@ -115,6 +125,7 @@ void display_tasks(const char *filename, const char *project_id) {
         const char *task_project_id = cJSON_GetObjectItem(task, "project_id")->valuestring;
         if (strcmp(task_project_id, project_id) == 0) {
             const char *name = cJSON_GetObjectItem(task, "name")->valuestring;
+            const char *start_date = cJSON_GetObjectItem(task, "start_date")->valuestring;
             const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
             const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
             cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
@@ -122,6 +133,7 @@ void display_tasks(const char *filename, const char *project_id) {
             const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
 
             printf("%d. %s\n", index++, name);
+            printf("   Ngày bắt đầu: %s\n", start_date);
             printf("   Deadline: %s\n", deadline);
             printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
             printf("   Tiến độ công việc : %s%%\n", status);
@@ -165,6 +177,7 @@ void view_task_details(const char *filename, const char *project_id) {
             if (index == choice) {
                 const char *name = cJSON_GetObjectItem(task, "name")->valuestring;
                 const char *description = cJSON_GetObjectItem(task, "description")->valuestring;
+                const char *start_date = cJSON_GetObjectItem(task, "start_date")->valuestring;
                 const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
                 const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
                 cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
@@ -174,6 +187,7 @@ void view_task_details(const char *filename, const char *project_id) {
                 printf("\n--- CHI TIẾT TASK ---\n");
                 printf("Tên: %s\n", name);
                 printf("Mô tả: %s\n", description);
+                printf("Ngày bắt đầu: %s\n", start_date);
                 printf("Deadline: %s\n", deadline);
                 printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
                 printf("Tiến độ công việc : %s%%\n", status);
@@ -330,5 +344,94 @@ void update_task_progress(const char *filename, const char *project_id, const ch
     }
 
     free(updated_content);
+    cJSON_Delete(json);
+}
+
+//hien thi gantt chart
+
+
+
+// Hàm tính số ngày giữa hai ngày
+int days_between(const char *start_date, const char *end_date) {
+    struct tm tm_start, tm_end;
+    time_t time_start, time_end;
+
+    memset(&tm_start, 0, sizeof(struct tm));
+    memset(&tm_end, 0, sizeof(struct tm));
+
+    strptime(start_date, "%Y-%m-%d", &tm_start);
+    strptime(end_date, "%Y-%m-%d", &tm_end);
+
+    time_start = mktime(&tm_start);
+    time_end = mktime(&tm_end);
+
+    return (int)difftime(time_end, time_start) / (60 * 60 * 24);
+}
+
+// Hàm hiển thị biểu đồ Gantt
+void display_gantt_chart(const char *filename, const char *project_id) {
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có task nào được lưu.\n");
+        return;
+    }
+
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu task.\n");
+        return;
+    }
+
+    cJSON *tasks = cJSON_GetObjectItem(json, "tasks");
+    if (!cJSON_IsArray(tasks)) {
+        printf("Danh sách task không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    printf("\n--- BIỂU ĐỒ GANTT CHO PROJECT ID %s ---\n", project_id);
+
+    // Hiển thị tiêu đề các tháng
+    printf("   ");
+    for (int month = 1; month <= 12; month++) {
+        printf("%4d ", month);
+    }
+    printf("\n");
+
+    cJSON *task;
+    cJSON_ArrayForEach(task, tasks) {
+        const char *task_project_id = cJSON_GetObjectItem(task, "project_id")->valuestring;
+        if (strcmp(task_project_id, project_id) == 0) {
+            const char *name = cJSON_GetObjectItem(task, "name")->valuestring;
+            const char *start_date = cJSON_GetObjectItem(task, "start_date")->valuestring;
+            const char *end_date = cJSON_GetObjectItem(task, "deadline")->valuestring;
+
+            struct tm tm_start, tm_end;
+            memset(&tm_start, 0, sizeof(struct tm));
+            memset(&tm_end, 0, sizeof(struct tm));
+            strptime(start_date, "%Y-%m-%d", &tm_start);
+            strptime(end_date, "%Y-%m-%d", &tm_end);
+
+            int start_month = tm_start.tm_mon + 1; // Tháng bắt đầu (1-12)
+            int end_month = tm_end.tm_mon + 1; // Tháng kết thúc (1-12)
+            int duration = days_between(start_date, end_date);
+
+            printf("%-3s", name); // Hiển thị tên task
+
+            // Hiển thị các tháng trước tháng bắt đầu
+            for (int i = 1; i < start_month; i++) {
+                printf("     ");
+            }
+            // Hiển thị các tháng của task
+            for (int i = start_month; i <= end_month; i++) {
+                printf("#### ");
+            }
+
+            printf(" (%d ngày)\n", duration);
+        }
+    }
+
     cJSON_Delete(json);
 }
