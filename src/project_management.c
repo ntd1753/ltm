@@ -7,43 +7,7 @@
 #include "member_management.h"
 #include "project_management.h"
 
-// Hàm hiển thị danh sách các project
-// void display_projects(const char *filename, const char *user_id) {
-//     char *file_content = read_file(filename);
-//     if (!file_content) {
-//         printf("Không có project nào được lưu.\n");
-//         return;
-//     }
-
-//     cJSON *json = cJSON_Parse(file_content);
-//     free(file_content);
-
-//     if (!json) {
-//         printf("Lỗi: Không thể đọc dữ liệu project.\n");
-//         return;
-//     }
-
-//     cJSON *projects = cJSON_GetObjectItem(json, "projects");
-//     if (!cJSON_IsArray(projects)) {
-//         printf("Danh sách project không hợp lệ.\n");
-//         cJSON_Delete(json);
-//         return;
-//     }
-
-// printf("\n--- DANH SÁCH PROJECT CỦA USER ID %s ---\n", user_id); 
-//     cJSON *project;
-//     int index = 1;
-//    cJSON_ArrayForEach(project, projects) {
-//         const char *project_user_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
-//         if (strcmp(project_user_id, user_id) == 0) {
-//             const char *name = cJSON_GetObjectItem(project, "name")->valuestring;
-//             printf("%d. %s\n", index++, name);
-//         }
-//     }
-
-//     cJSON_Delete(json);
-// }
-
+// Hàm hiển thị danh sách project
 void display_projects(const char *filename, const char *user_id, int mode) {
     char *file_content = read_file(filename);
     if (!file_content) {
@@ -302,7 +266,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 view_members_of_project(filename, user_id, project);
                                 break;
                             case 5:
-                                view_task_details("../database/task.json", project_id);
+                                view_task_details_for_manager("../database/task.json", project_id);
                                 break;
                              case 6: {
                                 char task_name[50], member_name[50];
@@ -375,7 +339,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 display_tasks("../database/task.json", project_id);
                                 break;
                             case 2:
-                                view_task_details("../database/task.json", project_id);
+                                view_task_details_for_member("../database/task.json", project_id);
                                 break;
                             case 3:
                                 update_task_progress("../database/task.json", project_id, user_id);

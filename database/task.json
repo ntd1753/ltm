@@ -3,13 +3,13 @@
 			"task_id":	"4",
 			"name":	"task 1",
 			"description":	"task project 2 Nhi",
-			"project_id":	"3",
+			"project_id":	"1",
 			"start_date":	"2025-12-01",
 			"deadline":	"2025-12-06",
 			"status":	"30",
 			"assigned_member":	{
-				"id":	"2",
-				"name":	"rang"
+				"id":	"1",
+				"name":	"Nhi"
 			}
 		}, {
 			"task_id":	"5",

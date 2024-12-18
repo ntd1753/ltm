@@ -129,13 +129,20 @@ void display_tasks(const char *filename, const char *project_id) {
             const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
             const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
             cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
-            const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
-            const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
+            // const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+            // const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
 
             printf("%d. %s\n", index++, name);
             printf("   Ngày bắt đầu: %s\n", start_date);
             printf("   Deadline: %s\n", deadline);
-            printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+            // printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+            if (assigned_member) {
+                const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
+                printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+            } else {
+                printf("   Thành viên được phân công: Chưa được phân công\n");
+            }
             printf("   Tiến độ công việc : %s%%\n", status);
         }
     }
@@ -143,7 +150,7 @@ void display_tasks(const char *filename, const char *project_id) {
     cJSON_Delete(json);
 }
 // Hàm hiển thị chi tiết task
-void view_task_details(const char *filename, const char *project_id) {
+void view_task_details_for_manager(const char *filename, const char *project_id) {
     int choice;
     printf("\nChọn số thứ tự của task để xem chi tiết: ");
     scanf("%d", &choice);
@@ -181,16 +188,113 @@ void view_task_details(const char *filename, const char *project_id) {
                 const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
                 const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
                 cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
-                const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
-                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
+                // const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                // const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
 
                 printf("\n--- CHI TIẾT TASK ---\n");
                 printf("Tên: %s\n", name);
                 printf("Mô tả: %s\n", description);
                 printf("Ngày bắt đầu: %s\n", start_date);
                 printf("Deadline: %s\n", deadline);
+                // printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                if (assigned_member) {
+                const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
                 printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                } else {
+                printf("Thành viên được phân công: Chưa được phân công\n");
+                }
                 printf("Tiến độ công việc : %s%%\n", status);
+                
+                int taskChoice;
+                do {
+                    printf("\n--- TÁC VỤ ---\n");
+                    printf("1. Chỉnh công việc\n");
+                    printf("2. Xóa công việc.\n");
+                    printf("0. Quay lại\n");
+                    printf("Lựa chọn: ");
+                    scanf("%d", &taskChoice);
+                    switch (taskChoice) {
+                        case 1:
+                            edit_task(filename, cJSON_GetObjectItem(task, "task_id")->valuestring);
+                            break;
+                        case 2:
+                            delete_task(filename, cJSON_GetObjectItem(task, "task_id")->valuestring);
+                            return;
+                        case 0:
+                            break;
+                        default:
+                            printf("Lựa chọn không hợp lệ.\n");
+                    }
+                } while (taskChoice != 0);
+
+                cJSON_Delete(json);
+                return;
+            }
+            index++;
+        }
+    }
+
+    printf("Số thứ tự không hợp lệ hoặc task không thuộc về project này.\n");
+    cJSON_Delete(json);
+}
+
+void view_task_details_for_member(const char *filename, const char *project_id) {
+    int choice;
+    printf("\nChọn số thứ tự của task để xem chi tiết: ");
+    scanf("%d", &choice);
+
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có task nào được lưu.\n");
+        return;
+    }
+
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu task.\n");
+        return;
+    }
+
+    cJSON *tasks = cJSON_GetObjectItem(json, "tasks");
+    if (!cJSON_IsArray(tasks)) {
+        printf("Danh sách task không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    int index = 1;
+    cJSON *task;
+    cJSON_ArrayForEach(task, tasks) {
+        const char *task_project_id = cJSON_GetObjectItem(task, "project_id")->valuestring;
+        if (strcmp(task_project_id, project_id) == 0) {
+            if (index == choice) {
+                const char *name = cJSON_GetObjectItem(task, "name")->valuestring;
+                const char *description = cJSON_GetObjectItem(task, "description")->valuestring;
+                const char *start_date = cJSON_GetObjectItem(task, "start_date")->valuestring;
+                const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
+                const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
+                cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
+                // const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                // const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
+
+                printf("\n--- CHI TIẾT TASK ---\n");
+                printf("Tên: %s\n", name);
+                printf("Mô tả: %s\n", description);
+                printf("Ngày bắt đầu: %s\n", start_date);
+                printf("Deadline: %s\n", deadline);
+                // printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                if (assigned_member) {
+                const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
+                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
+                printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                } else {
+                printf("Thành viên được phân công: Chưa được phân công\n");
+                }
+                printf("Tiến độ công việc : %s%%\n", status);
+            
                 cJSON_Delete(json);
                 return;
             }
@@ -241,11 +345,24 @@ void assign_task_to_member(const char *filename, const char *task_id, const char
     cJSON *task;
     cJSON_ArrayForEach(task, tasks) {
         const char *current_task_id = cJSON_GetObjectItem(task, "task_id")->valuestring;
+        // if (strcmp(current_task_id, task_id) == 0) {
+        //     cJSON *assigned_member = cJSON_CreateObject();
+        //     cJSON_AddStringToObject(assigned_member, "id", member_id);
+        //     cJSON_AddStringToObject(assigned_member, "name", member_name);
+        //     cJSON_AddItemToObject(task, "assigned_member", assigned_member);
+        //     break;
+        // }
         if (strcmp(current_task_id, task_id) == 0) {
             cJSON *assigned_member = cJSON_CreateObject();
             cJSON_AddStringToObject(assigned_member, "id", member_id);
             cJSON_AddStringToObject(assigned_member, "name", member_name);
-            cJSON_AddItemToObject(task, "assigned_member", assigned_member);
+
+            cJSON *existing_assigned_member = cJSON_GetObjectItem(task, "assigned_member");
+            if (existing_assigned_member) {
+                cJSON_ReplaceItemInObject(task, "assigned_member", assigned_member);
+            } else {
+                cJSON_AddItemToObject(task, "assigned_member", assigned_member);
+            }
             break;
         }
     }
@@ -434,4 +551,136 @@ void display_gantt_chart(const char *filename, const char *project_id) {
     }
 
     cJSON_Delete(json);
+}
+
+// Chinh sua task
+void edit_task(const char *filename, const char *task_id) {
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có task nào được lưu.\n");
+        return;
+    }
+
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu task.\n");
+        return;
+    }
+
+    cJSON *tasks = cJSON_GetObjectItem(json, "tasks");
+    if (!cJSON_IsArray(tasks)) {
+        printf("Danh sách task không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    cJSON *task;
+    cJSON_ArrayForEach(task, tasks) {
+        const char *current_task_id = cJSON_GetObjectItem(task, "task_id")->valuestring;
+        if (strcmp(current_task_id, task_id) == 0) {
+            char name[50], description[200], start_date[20], deadline[20], status[20];
+
+            printf("\n--- CHỈNH SỬA TASK ---\n");
+            printf("Nhập tên task mới (để trống nếu không thay đổi): ");
+            getchar(); // Đọc bỏ ký tự xuống dòng
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = '\0';
+
+            printf("Nhập mô tả task mới (để trống nếu không thay đổi): ");
+            fgets(description, sizeof(description), stdin);
+            description[strcspn(description, "\n")] = '\0';
+
+            printf("Nhập ngày bắt đầu mới (YYYY-MM-DD, để trống nếu không thay đổi): ");
+            fgets(start_date, sizeof(start_date), stdin);
+            start_date[strcspn(start_date, "\n")] = '\0';
+
+            printf("Nhập deadline mới (YYYY-MM-DD, để trống nếu không thay đổi): ");
+            fgets(deadline, sizeof(deadline), stdin);
+            deadline[strcspn(deadline, "\n")] = '\0';
+
+            if (strlen(name) > 0) {
+                cJSON_ReplaceItemInObject(task, "name", cJSON_CreateString(name));
+            }
+            if (strlen(description) > 0) {
+                cJSON_ReplaceItemInObject(task, "description", cJSON_CreateString(description));
+            }
+            if (strlen(start_date) > 0) {
+                cJSON_ReplaceItemInObject(task, "start_date", cJSON_CreateString(start_date));
+            }
+            if (strlen(deadline) > 0) {
+                cJSON_ReplaceItemInObject(task, "deadline", cJSON_CreateString(deadline));
+            }
+
+            break;
+        }
+    }
+
+    char *updated_content = cJSON_Print(json);
+    if (!write_file(filename, updated_content)) {
+        printf("Lỗi ghi file task.\n");
+    } else {
+        printf("Task được chỉnh sửa thành công!\n");
+    }
+
+    free(updated_content);
+    cJSON_Delete(json);
+}
+
+void delete_task(const char *filename, const char *task_id) {
+    char confirm;
+    printf("Bạn có chắc chắn muốn xóa task này? (y/n): ");
+    scanf(" %c", &confirm);
+
+    if (confirm == 'n' || confirm == 'N') {
+        printf("Hủy xóa task.\n");
+        return;
+    } else{
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có task nào được lưu.\n");
+        return;
+    }
+
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu task.\n");
+        return;
+    }
+
+    cJSON *tasks = cJSON_GetObjectItem(json, "tasks");
+    if (!cJSON_IsArray(tasks)) {
+        printf("Danh sách task không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    cJSON *task;
+    cJSON *prev = NULL;
+    cJSON_ArrayForEach(task, tasks) {
+        const char *current_task_id = cJSON_GetObjectItem(task, "task_id")->valuestring;
+        if (strcmp(current_task_id, task_id) == 0) {
+            if (prev) {
+                cJSON_DeleteItemFromArray(tasks, cJSON_GetArraySize(tasks) - 1);
+            } else {
+                cJSON_DeleteItemFromArray(tasks, 0);
+            }
+            break;
+        }
+        prev = task;
+    }
+
+    char *updated_content = cJSON_Print(json);
+    if (!write_file(filename, updated_content)) {
+        printf("Lỗi ghi file task.\n");
+    } else {
+        printf("Task đã được xóa thành công!\n");
+    }
+
+    free(updated_content);
+    cJSON_Delete(json);
+    }
 }
