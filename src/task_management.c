@@ -138,8 +138,7 @@ void display_tasks(const char *filename, const char *project_id) {
             // printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
             if (assigned_member) {
                 const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
-                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
-                printf("   Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                printf("   Thành viên được phân công: %s \n", assigned_member_name);
             } else {
                 printf("   Thành viên được phân công: Chưa được phân công\n");
             }
@@ -188,19 +187,15 @@ void view_task_details_for_manager(const char *filename, const char *project_id)
                 const char *deadline = cJSON_GetObjectItem(task, "deadline")->valuestring;
                 const char *status = cJSON_GetObjectItem(task, "status")->valuestring;
                 cJSON *assigned_member = cJSON_GetObjectItem(task, "assigned_member");
-                // const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
-                // const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
-
+                
                 printf("\n--- CHI TIẾT TASK ---\n");
                 printf("Tên: %s\n", name);
                 printf("Mô tả: %s\n", description);
                 printf("Ngày bắt đầu: %s\n", start_date);
                 printf("Deadline: %s\n", deadline);
-                // printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
                 if (assigned_member) {
                 const char *assigned_member_name = cJSON_GetObjectItem(assigned_member, "name")->valuestring;
-                const char *assigned_member_id = cJSON_GetObjectItem(assigned_member, "id")->valuestring;
-                printf("Thành viên được phân công: %s (ID: %s)\n", assigned_member_name, assigned_member_id);
+                printf("Thành viên được phân công: %s \n", assigned_member_name);
                 } else {
                 printf("Thành viên được phân công: Chưa được phân công\n");
                 }
@@ -345,13 +340,6 @@ void assign_task_to_member(const char *filename, const char *task_id, const char
     cJSON *task;
     cJSON_ArrayForEach(task, tasks) {
         const char *current_task_id = cJSON_GetObjectItem(task, "task_id")->valuestring;
-        // if (strcmp(current_task_id, task_id) == 0) {
-        //     cJSON *assigned_member = cJSON_CreateObject();
-        //     cJSON_AddStringToObject(assigned_member, "id", member_id);
-        //     cJSON_AddStringToObject(assigned_member, "name", member_name);
-        //     cJSON_AddItemToObject(task, "assigned_member", assigned_member);
-        //     break;
-        // }
         if (strcmp(current_task_id, task_id) == 0) {
             cJSON *assigned_member = cJSON_CreateObject();
             cJSON_AddStringToObject(assigned_member, "id", member_id);

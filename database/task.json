@@ -6,7 +6,7 @@
 			"project_id":	"1",
 			"start_date":	"2025-12-01",
 			"deadline":	"2025-12-06",
-			"status":	"30",
+			"status":	"90",
 			"assigned_member":	{
 				"id":	"1",
 				"name":	"Nhi"
@@ -34,6 +34,30 @@
 			"assigned_member":	{
 				"id":	"3",
 				"name":	"dat"
+			}
+		}, {
+			"task_id":	"7",
+			"name":	"giao thuc",
+			"description":	"thiet ke cac giao thuc cho client, serve",
+			"project_id":	"2",
+			"start_date":	"2024-12-05",
+			"deadline":	"2024-12-20",
+			"status":	"50",
+			"assigned_member":	{
+				"id":	"3",
+				"name":	"dat"
+			}
+		}, {
+			"task_id":	"8",
+			"name":	"itss",
+			"description":	"lm bt itss",
+			"project_id":	"1",
+			"start_date":	"2024-11-02",
+			"deadline":	"2024-11-05",
+			"status":	"40",
+			"assigned_member":	{
+				"id":	"4",
+				"name":	"binh"
 			}
 		}]
 }

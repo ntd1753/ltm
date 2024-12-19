@@ -183,7 +183,68 @@ void manage_projects(const char *filename, const char *user_id) {
     } while (choice != 0);
 }
 
+// Ham chinh sua project
+void edit_project(const char *filename, const char *project_id) {
+    char *file_content = read_file(filename);
+    if (!file_content) {
+        printf("Không có project nào được lưu.\n");
+        return;
+    }
 
+    cJSON *json = cJSON_Parse(file_content);
+    free(file_content);
+
+    if (!json) {
+        printf("Lỗi: Không thể đọc dữ liệu project.\n");
+        return;
+    }
+
+    cJSON *projects = cJSON_GetObjectItem(json, "projects");
+    if (!cJSON_IsArray(projects)) {
+        printf("Danh sách project không hợp lệ.\n");
+        cJSON_Delete(json);
+        return;
+    }
+
+    cJSON *project;
+    cJSON_ArrayForEach(project, projects) {
+        const char *current_project_id = cJSON_GetObjectItem(project, "project_id")->valuestring;
+        if (strcmp(current_project_id, project_id) == 0) {
+            char name[50], description[200];
+
+            printf("\n--- CHỈNH SỬA PROJECT ---\n");
+            printf("Nhập tên project mới (để trống nếu không thay đổi): ");
+            getchar(); // Đọc bỏ ký tự xuống dòng
+            fgets(name, sizeof(name), stdin);
+            name[strcspn(name, "\n")] = '\0';
+
+            printf("Nhập mô tả project mới (để trống nếu không thay đổi): ");
+            fgets(description, sizeof(description), stdin);
+            description[strcspn(description, "\n")] = '\0';
+
+            if (strlen(name) > 0) {
+                cJSON_ReplaceItemInObject(project, "name", cJSON_CreateString(name));
+            }
+            if (strlen(description) > 0) {
+                cJSON_ReplaceItemInObject(project, "description", cJSON_CreateString(description));
+            }
+
+            break;
+        }
+    }
+
+    char *updated_content = cJSON_Print(json);
+    if (!write_file(filename, updated_content)) {
+        printf("Lỗi ghi file project.\n");
+    } else {
+        printf("Project được chỉnh sửa thành công!\n");
+    }
+
+    free(updated_content);
+    cJSON_Delete(json);
+}
+
+// Ham xem chi tiet project
 void view_project_details(const char *filename, const char *user_id, int mode) {
     int choice;
     printf("\nChọn số thứ tự của project để xem chi tiết: ");
@@ -249,6 +310,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                         printf("6. Gán công việc cho thành viên\n");
                         printf("7. Chat với thành viên\n");
                         printf("8. Hiển thị biểu đồ Gantt cho project\n");
+                        printf("9. Chỉnh sửa project\n");
                         printf("0. Quay lại\n");
                         printf("Lựa chọn: ");
                         scanf("%d", &projectChoice);
@@ -314,6 +376,9 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                             case 7:
                             case 8:
                                 display_gantt_chart("../database/task.json", project_id);
+                                break;
+                            case 9:
+                                edit_project(filename, project_id);
                                 break;
                             case 0:
                                 manage_projects(filename, user_id);
