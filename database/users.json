@@ -13,7 +13,11 @@
 			"password":	"1234"
 		}, {
 			"user_id":	"4",
-			"username":	"binh",
-			"password":	"12345"
+			"username":	"dar",
+			"password":	"123456"
+		}, {
+			"user_id":	"5",
+			"username":	"abc",
+			"password":	"1"
 		}]
 }

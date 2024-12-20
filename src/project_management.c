@@ -6,6 +6,7 @@
 #include "task_management.h"
 #include "member_management.h"
 #include "project_management.h"
+#include "chat_management.h"
 
 // Hàm hiển thị danh sách project
 void display_projects(const char *filename, const char *user_id, int mode) {
@@ -151,7 +152,7 @@ void manage_projects(const char *filename, const char *user_id) {
         printf("2. Xem project được giao\n");
         printf("3. Tạo project mới\n");
         printf("4. Xem chi tiết project của tôi\n");
-        printf("5. Xem chi tiết project được giao\n");        
+        printf("5. Xem chi tiết project được giao\n");
         printf("0. Quay lại\n");
         printf("Lựa chọn: ");
         scanf("%d", &choice);
@@ -182,6 +183,7 @@ void manage_projects(const char *filename, const char *user_id) {
         }
     } while (choice != 0);
 }
+
 
 // Ham chinh sua project
 void edit_project(const char *filename, const char *project_id) {
@@ -228,6 +230,7 @@ void edit_project(const char *filename, const char *project_id) {
             if (strlen(description) > 0) {
                 cJSON_ReplaceItemInObject(project, "description", cJSON_CreateString(description));
             }
+
 
             break;
         }
@@ -380,6 +383,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                             case 9:
                                 edit_project(filename, project_id);
                                 break;
+                                chat_with_member(filename, user_id, project);
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;
@@ -413,6 +417,7 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 view_members_of_project(filename, user_id, project);
                                 break;
                             case 5:
+                                chat_with_member(filename, user_id, project);
                             case 6:
                                 display_gantt_chart("../database/task.json", project_id);
                                 break;
