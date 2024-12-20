@@ -141,13 +141,14 @@ void add_member_to_project(const char *filename, const char *user_id, cJSON *pro
     cJSON_Delete(root);
 
     // Gọi lại hàm manage_projects sau khi cập nhật
-    return manage_projects(filename, user_id); // Sửa lại cú pháp gọi hàm
+    // return manage_projects(filename, user_id); // Sửa lại cú pháp gọi hàm
+    return;
 }
 
 void view_members_of_project(const char *filename, const char *user_id, cJSON *project) {
     cJSON *members = cJSON_GetObjectItem(project, "members");
     if (!cJSON_IsArray(members)) {
-        printf("khoong co thanh vien nao.\n");
+        printf("khong co thanh vien nao.\n");
         return manage_projects(filename, user_id);
     }
 
@@ -159,5 +160,6 @@ void view_members_of_project(const char *filename, const char *user_id, cJSON *p
         const char *member_id = cJSON_GetObjectItem(member, "id")->valuestring;
         printf("%d. %s (ID: %s)\n", index++, member_name, member_id);
     }
-    return manage_projects(filename, user_id);
+    // return manage_projects(filename, user_id);
+    return;
 }

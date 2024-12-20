@@ -7,12 +7,22 @@
 			"members":	[{
 					"name":	"Nhi",
 					"id":	"1"
+				}, {
+					"name":	"binh",
+					"id":	"4"
 				}]
 		}, {
 			"project_id":	"2",
-			"name":	"project cua Nhi",
-			"description":	"day la project cua Nhi",
-			"user_id":	"1"
+			"name":	"ltm",
+			"description":	"lam bai tap ltm de thuyet trinh",
+			"user_id":	"1",
+			"members":	[{
+					"name":	"rang",
+					"id":	"2"
+				}, {
+					"name":	"dat",
+					"id":	"3"
+				}]
 		}, {
 			"project_id":	"3",
 			"name":	"project 2 cua Nhi",
