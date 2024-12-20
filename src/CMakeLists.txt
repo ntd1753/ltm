@@ -15,7 +15,7 @@ set(SOURCES
     ${SOURCE_DIR}/project_management.c
     ${SOURCE_DIR}/task_management.c
     ${SOURCE_DIR}/member_management.c
-
+    ${SOURCE_DIR}/chat_management.c
 )
 
 # Đường dẫn tới thư viện cJSON
@@ -28,3 +28,6 @@ include_directories(${SOURCE_DIR})
 
 # Tạo file thực thi
 add_executable(json_test ${SOURCES} ${CJSON_LIB})
+
+# Tạo file thực thi cho server
+add_executable(server ${CJSON_LIB} ${SOURCE_DIR}/server.c)
