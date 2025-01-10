@@ -7,6 +7,7 @@ sudo apt install cmake
 
 ## Cài cJSON
 ```
+Nếu trong project chưa có thư mục CJSon
 git clone https://github.com/DaveGamble/cJSON.git
 cd cJSON
 
