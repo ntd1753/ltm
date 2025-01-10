@@ -25,7 +25,7 @@ cd build
 cmake ../src
 make
 ```
-# chay project
+# chạy project
 ```
 Từ thư mục gốc của project
 cd build
