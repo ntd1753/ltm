@@ -1,4 +1,12 @@
-## Cai cJSON
+## Cài Cmake
+```
+sudo apt install build-essential
+sudo apt update
+sudo apt install cmake
+```
+
+## Cài cJSON
+```
 git clone https://github.com/DaveGamble/cJSON.git
 cd cJSON
 
@@ -7,18 +15,23 @@ cd build
 cmake ..
 make
 sudo make install
-
-## Cai Cmake
-
-sudo apt install build-essential
-sudo apt update
-sudo apt install cmake
+```
 
 ## build project
-tu thu muc goc cua project
+```
+từ thư mục gốc của project
 cd build
 cmake ../src
 make
-
+```
 # chay project
+```
+Từ thư mục gốc của project
+cd build
+
+chạy client
 ./json_test
+
+chạy server
+./server
+```
