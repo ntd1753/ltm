@@ -20,6 +20,7 @@ sudo make install
 ## build project
 ```
 từ thư mục gốc của project
+mkdir build
 cd build
 cmake ../src
 make
