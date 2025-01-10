@@ -377,13 +377,14 @@ void view_project_details(const char *filename, const char *user_id, int mode) {
                                 break;
                             }
                             case 7:
+                            chat_with_member(filename, user_id, project);
+                            break;
                             case 8:
                                 display_gantt_chart("../database/task.json", project_id);
                                 break;
                             case 9:
                                 edit_project(filename, project_id);
                                 break;
-                                chat_with_member(filename, user_id, project);
                             case 0:
                                 manage_projects(filename, user_id);
                                 break;

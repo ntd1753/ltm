@@ -204,67 +204,10 @@ int initialize_socket() {
     return sockfd;
 }
 
-// Hàm kiểm tra xem user có thuộc nhóm hay không
-int check_membership(const char *user_id, const char *project_id, const char *project_file) {
-    FILE *file = fopen(project_file, "r");
-    if (!file) {
-        perror("Lỗi mở file project");
-        return 0;
-    }
-
-    char *buffer = NULL;
-    size_t len = 0;
-    fseek(file, 0, SEEK_END);
-    len = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    buffer = malloc(len + 1);
-    fread(buffer, 1, len, file);
-    fclose(file);
-
-    cJSON *projects_data = cJSON_Parse(buffer);
-    free(buffer);
-    if (!projects_data) {
-        printf("Lỗi parse JSON\n");
-        return 0;
-    }
-
-    cJSON *projects = cJSON_GetObjectItem(projects_data, "projects");
-    cJSON *project;
-    cJSON_ArrayForEach(project, projects) {
-        const char *proj_id = cJSON_GetObjectItem(project, "project_id")->valuestring;
-        if (strcmp(proj_id, project_id) == 0) {
-            const char *owner_id = cJSON_GetObjectItem(project, "user_id")->valuestring;
-            if (strcmp(owner_id, user_id) == 0) {
-                cJSON_Delete(projects_data);
-                return 1;
-            }
-
-            cJSON *members = cJSON_GetObjectItem(project, "members");
-            if (cJSON_IsArray(members)) {
-                cJSON *member;
-                cJSON_ArrayForEach(member, members) {
-                    const char *member_id = cJSON_GetObjectItem(member, "id")->valuestring;
-                    if (strcmp(member_id, user_id) == 0) {
-                        cJSON_Delete(projects_data);
-                        return 1;
-                    }
-                }
-            }
-        }
-    }
-
-    cJSON_Delete(projects_data);
-    return 0;
-}
-
 // Hàm chính để thực hiện chat
 void chat_with_member(const char *filename, const char *user_id, cJSON *project) {
     const char *project_id = cJSON_GetObjectItem(project, "project_id")->valuestring;
-    if (!check_membership(user_id, project_id, filename)) {
-        printf("Bạn không thuộc nhóm chat này.\n");
-        return;
-    }
+
     print_project_messages(project_id);
     int sockfd = initialize_socket();
     if (sockfd < 0) return;
@@ -275,7 +218,7 @@ void chat_with_member(const char *filename, const char *user_id, cJSON *project)
     thread_args_t *args = malloc(sizeof(thread_args_t));
     args->sockfd = sockfd;
     strncpy(args->project_id, project_id, sizeof(args->project_id) - 1);
-    args->project_id[sizeof(args->project_id) - 1] = '\0'; // Đảm bảo chuỗi kết thúc bằng NULL
+    args->project_id[sizeof(args->project_id) - 1] = '\0';
 
     if (pthread_create(&recv_thread, NULL, receive_messages, args) < 0) {
         perror("Không thể tạo thread nhận tin nhắn");

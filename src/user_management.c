@@ -27,6 +27,12 @@ void register_user(const char *filename) {
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = '\0';
 
+    // Kiểm tra xem username có rỗng không
+    if (strlen(username) == 0) {
+        printf("Tên đăng nhập không được để trống.\n");
+        return;
+    }
+
     printf("Nhập mật khẩu: ");
     fgets(password, sizeof(password), stdin);
     password[strcspn(password, "\n")] = '\0';
@@ -54,6 +60,17 @@ void register_user(const char *filename) {
         return;
     }
 
+    // Kiểm tra trùng lặp username
+    cJSON *user;
+    cJSON_ArrayForEach(user, users) {
+        cJSON *existing_username = cJSON_GetObjectItem(user, "username");
+        if (existing_username && strcmp(existing_username->valuestring, username) == 0) {
+            printf("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.\n");
+            cJSON_Delete(json);
+            return;
+        }
+    }
+
     int new_user_id = generate_user_id(users);
 
     cJSON *new_user = cJSON_CreateObject();
@@ -75,54 +92,7 @@ void register_user(const char *filename) {
     cJSON_Delete(json);
 }
 
-// // Hàm tạo tài khoản mới
-// void create_account(const char *filename) {
-//     char username[50], password[50];
 
-//     printf("Nhập tên tài khoản: ");
-//     scanf("%s", username);
-//     printf("Nhập mật khẩu: ");
-//     scanf("%s", password);
-
-//     // Đọc file JSON
-//     char *file_content = read_file(filename);
-//     if (!file_content) {
-//         return;
-//     }
-
-//     cJSON *json = cJSON_Parse(file_content);
-//     free(file_content);
-
-//     if (!json) {
-//         printf("Lỗi parse JSON: %s\n", cJSON_GetErrorPtr());
-//         return;
-//     }
-
-//     // Thêm tài khoản mới vào danh sách
-//     cJSON *users = cJSON_GetObjectItem(json, "users");
-//     if (!cJSON_IsArray(users)) {
-//         printf("Lỗi: Danh sách người dùng không hợp lệ.\n");
-//         cJSON_Delete(json);
-//         return;
-//     }
-
-//     cJSON *new_user = cJSON_CreateObject();
-//     cJSON_AddStringToObject(new_user, "user_id", )));
-//     cJSON_AddStringToObject(new_user, "username", username);
-//     cJSON_AddStringToObject(new_user, "password", password);
-//     cJSON_AddItemToArray(users, new_user);
-
-//     // Ghi lại file JSON
-//     char *updated_content = cJSON_Print(json);
-//     if (!write_file(filename, updated_content)) {
-//         printf("Lỗi ghi file.\n");
-//     } else {
-//         printf("Tạo tài khoản thành công.\n");
-//     }
-
-//     free(updated_content);
-//     cJSON_Delete(json);
-// }
 
 // Hàm xác thực tài khoản
 int authenticate_user(const char *filename, char *user_id) {
